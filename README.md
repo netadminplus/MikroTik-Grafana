@@ -465,7 +465,7 @@ For issues related to:
 
 ## Author
 
-**Built between pings by [Ramtin Rahmani Nejad](https://netadminhub.com) ❤️**
+**Built between pings by [Ramtin Rahmani Nejad](https://netadminhub.com) ❤️*
 
 🌐 **Website**: [netadminhub.com](https://netadminhub.com)  
 💻 **GitHub**: [github.com/netadminhub](https://github.com/netadminhub)  

@@ -23,7 +23,7 @@ scrape_configs:
           - 192.168.88.1
     metrics_path: /snmp
     params:
-      auth: [netadminhub]
+      auth: [public_v2]
       module: [mikrotik]
     relabel_configs:
       - source_labels: [__address__]

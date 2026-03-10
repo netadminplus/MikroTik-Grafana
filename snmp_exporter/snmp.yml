@@ -2,8 +2,8 @@
 # This configuration collects metrics from MikroTik routers via SNMP
 
 auths:
-  netadminhub:
-    community: netadminhub
+  public_v2:
+    community: public
     security_level: noAuthNoPriv
     auth_protocol: MD5
     priv_protocol: DES

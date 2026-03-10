@@ -79,21 +79,28 @@ GRAFANA_ADMIN_PASSWORD=your-secure-password
 
 ### 4. Configure MikroTik Router
 
-Connect to your MikroTik router via WinBox, WebFig, or SSH and run **this one command**:
+> ⚠️ **Security Warning:** SNMP v2c sends data in plain text. Only enable it on trusted networks or restrict access to specific IPs. For production environments, consider SNMP v3 with authentication.
 
+Enable SNMP on your MikroTik router. **Official MikroTik SNMP documentation:**  
+📖 https://help.mikrotik.com/docs/spaces/ROS/pages/8978519/SNMP
+
+**Quick setup (run in MikroTik terminal):**
 ```routeros
-/ip firewall filter add chain=input protocol=udp dst-port=161 action=accept comment="Allow SNMP" place-before=0; /snmp set enabled=yes contact="admin@netadminhub.com" location="Server Room"; /snmp community add name=netadminhub addresses=0.0.0.0/0 security=none read-access=yes
+/ip firewall filter add chain=input protocol=udp dst-port=161 action=accept comment="Allow SNMP" place-before=0
+/snmp set enabled=yes
+/snmp community add name=public addresses=0.0.0.0/0 security=none read-access=yes
 ```
 
-**Optional** - For better security, restrict to your server's IP only:
-
+**More secure - restrict to your server IP only:**
 ```routeros
-/snmp set enabled=yes contact="admin@netadminhub.com" location="Server Room"; /snmp community add name=netadminhub addresses=<YOUR_SERVER_IP>/32 security=none read-access=yes
+/ip firewall filter add chain=input protocol=udp dst-port=161 action=accept comment="Allow SNMP" place-before=0
+/snmp set enabled=yes
+/snmp community add name=public addresses=<YOUR_SERVER_IP>/32 security=none read-access=yes
 ```
 
-Replace `<YOUR_SERVER_IP>` with your Ubuntu server's IP (e.g., `192.168.88.100`).
+Replace `<YOUR_SERVER_IP>` with your Ubuntu server's IP.
 
-> **Note:** If you already have an SNMP community, update it instead:
+> **Note:** If you already have an SNMP community configured, just update it:
 > ```routeros
 > /ip firewall filter add chain=input protocol=udp dst-port=161 action=accept comment="Allow SNMP" place-before=0
 > /snmp community set [find] addresses=0.0.0.0/0 security=none
@@ -108,16 +115,18 @@ Test SNMP from your Ubuntu server (choose one method):
 sudo apt update
 sudo apt install -y snmp snmp-mibs-downloader
 
-# Test SNMP connection (replace with your router IP)
-snmpwalk -v2c -c netadminhub 192.168.88.1 system
+# Test SNMP connection (replace with your router IP and community name)
+snmpwalk -v2c -c public 192.168.88.1 system
 ```
 
 **Option B: Test via Docker (no host installation required)**
 ```bash
-docker run --rm -it --network host alpine sh -c "apk add --no-cache net-snmp-tools && snmpwalk -v2c -c netadminhub 192.168.88.1 system"
+docker run --rm -it --network host alpine sh -c "apk add --no-cache net-snmp-tools && snmpwalk -v2c -c public 192.168.88.1 system"
 ```
 
 You should see system information returned.
+
+> **Note:** Replace `public` with your actual SNMP community string if you changed it.
 
 ### 5. Update Prometheus Configuration
 
@@ -135,10 +144,10 @@ Find and update the target IP address:
         - 192.168.88.1  # <-- Change this to your router's IP
 ```
 
-The default SNMP community is set to `netadminhub`. If you changed it, update in `snmp_exporter/snmp.yml`:
+The default SNMP community is set to `public`. If you changed it, update in `snmp_exporter/snmp.yml`:
 ```yaml
 auths:
-  netadminhub:
+  public_v2:
     community: your-community-string  # <-- Change this
 ```
 
@@ -273,7 +282,7 @@ tar -czf prometheus-backup-$(date +%Y%m%d).tar.gz prometheus/data/
 
 3. **Test from Ubuntu server:**
    ```bash
-   snmpwalk -v2c -c netadminhub 192.168.88.1 system
+   snmpwalk -v2c -c public 192.168.88.1 system
    ```
 
 4. **Check SNMP exporter logs:**

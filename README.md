@@ -79,35 +79,24 @@ GRAFANA_ADMIN_PASSWORD=your-secure-password
 
 ### 4. Configure MikroTik Router
 
-Connect to your MikroTik router via WinBox, WebFig, or SSH and run the following commands:
-
-#### Enable SNMP Server
+Connect to your MikroTik router via WinBox, WebFig, or SSH and run **this one command**:
 
 ```routeros
-# Enable SNMP service
-/snmp set enabled=yes
-
-# Set SNMP community (change 'public' to your preferred community string)
-/snmp community add name=public address=0.0.0.0/0 security=authorized read-access=yes
-
-# Set SNMP contact and location (optional but recommended)
-/system identity set name="MyMikroTik"
-/snmp set contact="admin@example.com" location="Server Room"
+/snmp set enabled=yes contact="admin@example.com" location="Server Room"; /snmp community add name=public addresses=0.0.0.0/0 security=authorized read-access=yes
 ```
 
-#### Configure SNMP Access (More Secure)
-
-For better security, restrict SNMP access to your monitoring server's IP:
+**Optional** - For better security, restrict to your server's IP only:
 
 ```routeros
-# Remove the default open community
-/snmp community remove [find where name="public"]
-
-# Add community restricted to monitoring server IP only
-/snmp community add name=public address=192.168.88.100/32 security=authorized read-access=yes
+/snmp set enabled=yes contact="admin@example.com" location="Server Room"; /snmp community add name=public addresses=<YOUR_SERVER_IP>/32 security=authorized read-access=yes
 ```
 
-Replace `192.168.88.100` with your Ubuntu server's IP address.
+Replace `<YOUR_SERVER_IP>` with your Ubuntu server's IP (e.g., `192.168.88.100`).
+
+> **Note:** If you already have an SNMP community, update it instead:
+> ```routeros
+> /snmp community set [find] addresses=0.0.0.0/0
+> ```
 
 #### Verify SNMP Configuration
 

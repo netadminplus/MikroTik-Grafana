@@ -1912,11 +1912,7 @@
         "multi": false,
         "name": "router",
         "options": [],
-        "query": {
-          "qryType": 1,
-          "query": "label_values(sysName, instance)",
-          "refId": "PrometheusVariableQueryEditor-VariableQuery"
-        },
+        "query": "label_values(sysName, instance)",
         "refresh": 1,
         "regex": "",
         "skipUrlSync": false,

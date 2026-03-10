@@ -1,6 +1,8 @@
 # MikroTik Router Monitoring with Grafana
 
-A complete Docker-based monitoring solution for MikroTik RouterOS v7 devices using Grafana, Prometheus, and SNMP Exporter.
+> **A complete Docker-based monitoring solution for MikroTik RouterOS v7 devices using Grafana, Prometheus, and SNMP Exporter.**
+
+*Created by [Ramtin Rahmani Nejad](https://netadminhub.com) | [netadminhub](https://github.com/netadminhub)*
 
 ## Architecture
 
@@ -109,15 +111,20 @@ Replace `192.168.88.100` with your Ubuntu server's IP address.
 
 #### Verify SNMP Configuration
 
-Test SNMP from your Ubuntu server:
+Test SNMP from your Ubuntu server (choose one method):
 
+**Option A: Install SNMP tools on host (optional)**
 ```bash
-# Install snmp tools
 sudo apt update
 sudo apt install -y snmp snmp-mibs-downloader
 
 # Test SNMP connection (replace with your router IP)
 snmpwalk -v2c -c public 192.168.88.1 system
+```
+
+**Option B: Test via Docker (no host installation required)**
+```bash
+docker run --rm -it --network host alpine sh -c "apk add --no-cache net-snmp-tools && snmpwalk -v2c -c public 192.168.88.1 system"
 ```
 
 You should see system information returned.
@@ -418,6 +425,23 @@ For issues related to:
 - **Prometheus**: https://prometheus.io/docs/
 - **SNMP Exporter**: https://github.com/prometheus/snmp_exporter
 - **MikroTik**: https://help.mikrotik.com/
+
+## Author
+
+**Built between pings by [Ramtin Rahmani Nejad](https://netadminhub.com) ❤️**
+
+🌐 **Website**: [netadminhub.com](https://netadminhub.com)  
+💻 **GitHub**: [github.com/netadminhub](https://github.com/netadminhub)  
+📺 **YouTube**: [youtube.com/@netadminhub](https://youtube.com/@netadminhub)  
+📸 **Instagram**: [instagram.com/netadminhub](https://instagram.com/netadminhub)  
+✕ **X (Twitter)**: [x.com/netadminhub](https://x.com/netadminhub)  
+✈️ **Telegram**: [t.me/netadminhub](https://t.me/netadminhub)
+
+### Support This Project
+
+If you find this project useful, consider supporting to keep the content free and independent:
+
+🍕 **Donate**: [netadminhub.com/donate/](https://netadminhub.com/donate/)
 
 ## License
 

@@ -82,13 +82,13 @@ GRAFANA_ADMIN_PASSWORD=your-secure-password
 Connect to your MikroTik router via WinBox, WebFig, or SSH and run **this one command**:
 
 ```routeros
-/ip firewall filter add chain=input protocol=udp dst-port=161 action=accept comment="Allow SNMP" place-before=0; /snmp set enabled=yes contact="admin@example.com" location="Server Room"; /snmp community add name=public addresses=0.0.0.0/0 security=none read-access=yes
+/ip firewall filter add chain=input protocol=udp dst-port=161 action=accept comment="Allow SNMP" place-before=0; /snmp set enabled=yes contact="admin@netadminhub.com" location="Server Room"; /snmp community add name=netadminhub addresses=0.0.0.0/0 security=none read-access=yes
 ```
 
 **Optional** - For better security, restrict to your server's IP only:
 
 ```routeros
-/snmp set enabled=yes contact="admin@example.com" location="Server Room"; /snmp community add name=public addresses=<YOUR_SERVER_IP>/32 security=none read-access=yes
+/snmp set enabled=yes contact="admin@netadminhub.com" location="Server Room"; /snmp community add name=netadminhub addresses=<YOUR_SERVER_IP>/32 security=none read-access=yes
 ```
 
 Replace `<YOUR_SERVER_IP>` with your Ubuntu server's IP (e.g., `192.168.88.100`).
@@ -109,12 +109,12 @@ sudo apt update
 sudo apt install -y snmp snmp-mibs-downloader
 
 # Test SNMP connection (replace with your router IP)
-snmpwalk -v2c -c public 192.168.88.1 system
+snmpwalk -v2c -c netadminhub 192.168.88.1 system
 ```
 
 **Option B: Test via Docker (no host installation required)**
 ```bash
-docker run --rm -it --network host alpine sh -c "apk add --no-cache net-snmp-tools && snmpwalk -v2c -c public 192.168.88.1 system"
+docker run --rm -it --network host alpine sh -c "apk add --no-cache net-snmp-tools && snmpwalk -v2c -c netadminhub 192.168.88.1 system"
 ```
 
 You should see system information returned.
@@ -135,10 +135,10 @@ Find and update the target IP address:
         - 192.168.88.1  # <-- Change this to your router's IP
 ```
 
-If you changed the SNMP community string, update it in `snmp_exporter/snmp.yml`:
+The default SNMP community is set to `netadminhub`. If you changed it, update in `snmp_exporter/snmp.yml`:
 ```yaml
 auths:
-  public_v2:
+  netadminhub:
     community: your-community-string  # <-- Change this
 ```
 
@@ -273,7 +273,7 @@ tar -czf prometheus-backup-$(date +%Y%m%d).tar.gz prometheus/data/
 
 3. **Test from Ubuntu server:**
    ```bash
-   snmpwalk -v2c -c public 192.168.88.1 system
+   snmpwalk -v2c -c netadminhub 192.168.88.1 system
    ```
 
 4. **Check SNMP exporter logs:**

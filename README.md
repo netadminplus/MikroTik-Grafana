@@ -156,13 +156,28 @@ auths:
     community: your-community-string  # <-- Change this
 ```
 
-### 6. Start the Monitoring Stack
+### 6. Fix Directory Permissions
+
+Before starting the stack, fix permissions on the data directories:
+
+```bash
+# Stop any running containers
+docker compose down
+
+# Fix permissions for Prometheus and Grafana data directories
+sudo chown -R 65534:65534 prometheus/data grafana/data
+
+# Set proper permissions
+sudo chmod -R 755 prometheus/data grafana/data
+```
+
+### 7. Start the Monitoring Stack
 
 ```bash
 docker compose up -d
 ```
 
-### 7. Verify Services Are Running
+### 8. Verify Services Are Running
 
 ```bash
 docker compose ps
@@ -175,7 +190,7 @@ Check logs if needed:
 docker compose logs -f
 ```
 
-### 8. Access Grafana
+### 9. Access Grafana
 
 Open your web browser and navigate to:
 
@@ -189,7 +204,7 @@ Default credentials:
 
 You will be prompted to change the password on first login.
 
-### 9. View the Dashboard
+### 10. View the Dashboard
 
 After logging in:
 
@@ -326,17 +341,23 @@ tar -czf prometheus-backup-$(date +%Y%m%d).tar.gz prometheus/data/
    docker compose up -d --build
    ```
 
-4. **Prometheus permission denied error:**
+4. **Permission denied errors (Prometheus/Grafana):**
    ```bash
    # Stop the stack
    docker compose down
-   
-   # Fix permissions on Prometheus data directory
-   sudo chown -R 65534:65534 prometheus/data
-   
+
+   # Fix permissions on data directories
+   sudo chown -R 65534:65534 prometheus/data grafana/data
+   sudo chmod -R 755 prometheus/data grafana/data
+
    # Restart
    docker compose up -d
    ```
+
+   **Common error messages:**
+   - `open /prometheus/queries.active: permission denied`
+   - `GF_PATHS_DATA='/var/lib/grafana' is not writable`
+   - `mkdir: can't create directory '/var/lib/grafana/plugins': Permission denied`
 
 ## Adding Multiple Routers
 

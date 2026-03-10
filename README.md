@@ -144,7 +144,12 @@ Find and update the target IP address:
         - 192.168.88.1  # <-- Change this to your router's IP
 ```
 
-The default SNMP community is set to `public`. If you changed it, update in `snmp_exporter/snmp.yml`:
+If you changed the SNMP community string from `public`, update it in `snmp_exporter/snmp.yml`:
+
+```bash
+nano snmp_exporter/snmp.yml
+```
+
 ```yaml
 auths:
   public_v2:
@@ -319,6 +324,18 @@ tar -czf prometheus-backup-$(date +%Y%m%d).tar.gz prometheus/data/
    ```bash
    docker compose down
    docker compose up -d --build
+   ```
+
+4. **Prometheus permission denied error:**
+   ```bash
+   # Stop the stack
+   docker compose down
+   
+   # Fix permissions on Prometheus data directory
+   sudo chown -R 65534:65534 prometheus/data
+   
+   # Restart
+   docker compose up -d
    ```
 
 ## Adding Multiple Routers

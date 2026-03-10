@@ -1,0 +1,680 @@
+# SNMP Exporter configuration for MikroTik RouterOS v7
+# This configuration collects metrics from MikroTik routers via SNMP
+
+auths:
+  public_v2:
+    community: public
+    security_level: noAuthNoPriv
+    auth_protocol: MD5
+    priv_protocol: DES
+    version: 2
+
+modules:
+  mikrotik:
+    walk:
+      # System information
+      - 1.3.6.1.2.1.1.1      # sysDescr
+      - 1.3.6.1.2.1.1.3      # sysUpTime
+      - 1.3.6.1.2.1.1.4      # sysContact
+      - 1.3.6.1.2.1.1.5      # sysName
+      - 1.3.6.1.2.1.1.6      # sysLocation
+      
+      # Interfaces - IF-MIB
+      - 1.3.6.1.2.1.2.2.1.2   # ifDescr
+      - 1.3.6.1.2.1.2.2.1.3   # ifType
+      - 1.3.6.1.2.1.2.2.1.4   # ifMtu
+      - 1.3.6.1.2.1.2.2.1.5   # ifSpeed
+      - 1.3.6.1.2.1.2.2.1.6   # ifPhysAddress
+      - 1.3.6.1.2.1.2.2.1.7   # ifAdminStatus
+      - 1.3.6.1.2.1.2.2.1.8   # ifOperStatus
+      - 1.3.6.1.2.1.2.2.1.10  # ifInOctets
+      - 1.3.6.1.2.1.2.2.1.11  # ifInUcastPkts
+      - 1.3.6.1.2.1.2.2.1.13  # ifInDiscards
+      - 1.3.6.1.2.1.2.2.1.14  # ifInErrors
+      - 1.3.6.1.2.1.2.2.1.16  # ifOutOctets
+      - 1.3.6.1.2.1.2.2.1.17  # ifOutUcastPkts
+      - 1.3.6.1.2.1.2.2.1.19  # ifOutDiscards
+      - 1.3.6.1.2.1.2.2.1.20  # ifOutErrors
+      
+      # IP Statistics
+      - 1.3.6.1.2.1.4.3       # ipForwarding
+      - 1.3.6.1.2.1.4.4.1     # ipAdEntAddr
+      - 1.3.6.1.2.1.4.20.1.1  # ipAdEntAddr
+      - 1.3.6.1.2.1.4.20.1.2  # ipAdEntIfIndex
+      - 1.3.6.1.2.1.4.20.1.3  # ipAdEntNetMask
+      
+      # TCP Connections
+      - 1.3.6.1.2.1.6.5       # tcpActiveOpens
+      - 1.3.6.1.2.1.6.6       # tcpPassiveOpens
+      - 1.3.6.1.2.1.6.7       # tcpAttemptFails
+      - 1.3.6.1.2.1.6.8       # tcpEstabResets
+      - 1.3.6.1.2.1.6.9       # tcpCurrEstab
+      - 1.3.6.1.2.1.6.10      # tcpInSegs
+      - 1.3.6.1.2.1.6.11      # tcpOutSegs
+      - 1.3.6.1.2.1.6.12      # tcpRetransSegs
+      
+      # UDP Statistics
+      - 1.3.6.1.2.1.7.1       # udpInDatagrams
+      - 1.3.6.1.2.1.7.2       # udpNoPorts
+      - 1.3.6.1.2.1.7.3       # udpInErrors
+      - 1.3.6.1.2.1.7.4       # udpOutDatagrams
+      
+      # ICMP Statistics
+      - 1.3.6.1.2.1.5.1       # icmpInMsgs
+      - 1.3.6.1.2.1.5.2       # icmpInErrors
+      - 1.3.6.1.2.1.5.14      # icmpOutMsgs
+      - 1.3.6.1.2.1.5.15      # icmpOutErrors
+      
+      # SNMP Statistics
+      - 1.3.6.1.2.1.11.1      # snmpInPkts
+      - 1.3.6.1.2.1.11.2      # snmpOutPkts
+      - 1.3.6.1.2.1.11.3      # snmpInBadVersions
+      - 1.3.6.1.2.1.11.4      # snmpInBadCommunityNames
+      - 1.3.6.1.2.1.11.5      # snmpInBadCommunityUses
+      - 1.3.6.1.2.1.11.6      # snmpInASNParseErrs
+      - 1.3.6.1.2.1.11.8      # snmpInTooBigs
+      - 1.3.6.1.2.1.11.9      # snmpInNoSuchNames
+      - 1.3.6.1.2.1.11.10     # snmpInBadValues
+      - 1.3.6.1.2.1.11.11     # snmpInReadOnlys
+      - 1.3.6.1.2.1.11.12     # snmpInGenErrs
+      - 1.3.6.1.2.1.11.13     # snmpInTotalReqVars
+      - 1.3.6.1.2.1.11.14     # snmpInTotalSetVars
+      - 1.3.6.1.2.1.11.15     # snmpInGetRequests
+      - 1.3.6.1.2.1.11.16     # snmpInGetNexts
+      - 1.3.6.1.2.1.11.17     # snmpInSetRequests
+      - 1.3.6.1.2.1.11.18     # snmpInGetResponses
+      - 1.3.6.1.2.1.11.19     # snmpInTraps
+      - 1.3.6.1.2.1.11.20     # snmpOutTooBigs
+      - 1.3.6.1.2.1.11.21     # snmpOutNoSuchNames
+      - 1.3.6.1.2.1.11.22     # snmpOutBadValues
+      - 1.3.6.1.2.1.11.24     # snmpOutGenErrs
+      - 1.3.6.1.2.1.11.25     # snmpOutBadVersions
+      - 1.3.6.1.2.1.11.26     # snmpOutRequests
+      - 1.3.6.1.2.1.11.27     # snmpOutResponses
+      - 1.3.6.1.2.1.11.28     # snmpOutTraps
+      
+      # Host Resources (Memory, CPU, Storage)
+      - 1.3.6.1.2.1.25.1.1    # hrSystemUptime
+      - 1.3.6.1.2.1.25.1.2    # hrSystemInitialLoadDevice
+      - 1.3.6.1.2.1.25.1.3    # hrSystemInitialLoadParameters
+      - 1.3.6.1.2.1.25.1.5    # hrSystemNumUsers
+      - 1.3.6.1.2.1.25.1.6    # hrSystemProcesses
+      - 1.3.6.1.2.1.25.1.7    # hrSystemMaxProcesses
+      - 1.3.6.1.2.1.25.2.2    # hrMemorySize
+      - 1.3.6.1.2.1.25.2.3.1.2  # hrStorageType
+      - 1.3.6.1.2.1.25.2.3.1.3  # hrStorageDescr
+      - 1.3.6.1.2.1.25.2.3.1.4  # hrStorageAllocationUnits
+      - 1.3.6.1.2.1.25.2.3.1.5  # hrStorageSize
+      - 1.3.6.1.2.1.25.2.3.1.6  # hrStorageUsed
+      
+      # MikroTik-specific OIDs (Enterprise OID: 1.3.6.1.4.1.14988)
+      - 1.3.6.1.4.1.14988.1.1.1.1.1   # mtxrInterfaceStatsName
+      - 1.3.6.1.4.1.14988.1.1.1.1.2   # mtxrInterfaceStatsRxByte
+      - 1.3.6.1.4.1.14988.1.1.1.1.3   # mtxrInterfaceStatsTxByte
+      - 1.3.6.1.4.1.14988.1.1.1.1.4   # mtxrInterfaceStatsRxPacket
+      - 1.3.6.1.4.1.14988.1.1.1.1.5   # mtxrInterfaceStatsTxPacket
+      - 1.3.6.1.4.1.14988.1.1.1.1.6   # mtxrInterfaceStatsRxError
+      - 1.3.6.1.4.1.14988.1.1.1.1.7   # mtxrInterfaceStatsTxError
+      - 1.3.6.1.4.1.14988.1.1.1.1.8   # mtxrInterfaceStatsRxDrop
+      - 1.3.6.1.4.1.14988.1.1.1.1.9   # mtxrInterfaceStatsTxDrop
+      - 1.3.6.1.4.1.14988.1.1.1.1.10  # mtxrInterfaceStatsTxQueueDrop
+      - 1.3.6.1.4.1.14988.1.1.1.1.11  # mtxrInterfaceStatsRxQueueDrop
+      
+      # Temperature and Health (if supported)
+      - 1.3.6.1.4.1.14988.1.1.3.10    # mtxrHealthTemperature
+      - 1.3.6.1.4.1.14988.1.1.3.11    # mtxrHealthVoltage
+      - 1.3.6.1.4.1.14988.1.1.3.12    # mtxrHealthCurrent
+      - 1.3.6.1.4.1.14988.1.1.3.13    # mtxrHealthPowerConsumption
+      
+      # Wireless (if applicable)
+      - 1.3.6.1.4.1.14988.1.1.2.1.1   # mtxrWlInterfaceName
+      - 1.3.6.1.4.1.14988.1.1.2.1.2   # mtxrWlRxByte
+      - 1.3.6.1.4.1.14988.1.1.2.1.3   # mtxrWlTxByte
+      - 1.3.6.1.4.1.14988.1.1.2.1.4   # mtxrWlRxPacket
+      - 1.3.6.1.4.1.14988.1.1.2.1.5   # mtxrWlTxPacket
+      
+      # DHCP Server Leases
+      - 1.3.6.1.4.1.14988.1.1.4.1.1   # mtxrDhcpServerLeasIpAddress
+      - 1.3.6.1.4.1.14988.1.1.4.1.2   # mtxrDhcpServerLeasMacAddress
+      - 1.3.6.1.4.1.14988.1.1.4.1.3   # mtxrDhcpServerLeasServerId
+      - 1.3.6.1.4.1.14988.1.1.4.1.4   # mtxrDhcpServerLeasStatus
+      
+      # Neighbor Discovery
+      - 1.3.6.1.4.1.14988.1.1.5.1.1   # mtxrNeighborMacAddress
+      - 1.3.6.1.4.1.14988.1.1.5.1.2   # mtxrNeighborIpAddress
+      - 1.3.6.1.4.1.14988.1.1.5.1.3   # mtxrNeighborInterface
+      - 1.3.6.1.4.1.14988.1.1.5.1.4   # mtxrNeighborIdentity
+      - 1.3.6.1.4.1.14988.1.1.5.1.5   # mtxrNeighborPlatform
+      - 1.3.6.1.4.1.14988.1.1.5.1.6   # mtxrNeighborVersion
+      
+      # CPU Usage
+      - 1.3.6.1.4.1.14988.1.1.3.1     # mtxrCpuLoad
+      - 1.3.6.1.4.1.14988.1.1.3.2     # mtxrCpuFrequency
+      - 1.3.6.1.4.1.14988.1.1.3.3     # mtxrCpuCount
+      
+      # Memory Usage
+      - 1.3.6.1.4.1.14988.1.1.3.4     # mtxrMemoryTotal
+      - 1.3.6.1.4.1.14988.1.1.3.5     # mtxrMemoryUsed
+      - 1.3.6.1.4.1.14988.1.1.3.6     # mtxrMemoryFree
+      
+      # Disk Usage
+      - 1.3.6.1.4.1.14988.1.1.3.7     # mtxrDiskSize
+      - 1.3.6.1.4.1.14988.1.1.3.8     # mtxrDiskUsed
+      - 1.3.6.1.4.1.14988.1.1.3.9     # mtxrDiskFree
+      
+      # GPS (if applicable)
+      - 1.3.6.1.4.1.14988.1.1.6.1     # mtxrGpsLatitude
+      - 1.3.6.1.4.1.14988.1.1.6.2     # mtxrGpsLongitude
+      - 1.3.6.1.4.1.14988.1.1.6.3     # mtxrGpsAltitude
+      - 1.3.6.1.4.1.14988.1.1.6.4     # mtxrGpsSpeed
+      - 1.3.6.1.4.1.14988.1.1.6.5     # mtxrGpsSatellites
+      - 1.3.6.1.4.1.14988.1.1.6.6     # mtxrGpsValid
+      
+      # POE (if applicable)
+      - 1.3.6.1.4.1.14988.1.1.7.1.1   # mtxrPoeInterface
+      - 1.3.6.1.4.1.14988.1.1.7.1.2   # mtxrPoeVoltage
+      - 1.3.6.1.4.1.14988.1.1.7.1.3   # mtxrPoeCurrent
+      - 1.3.6.1.4.1.14988.1.1.7.1.4   # mtxrPoePower
+      - 1.3.6.1.4.1.14988.1.1.7.1.5   # mtxrPoeClass
+      - 1.3.6.1.4.1.14988.1.1.7.1.6   # mtxrPoeStatus
+      
+      # Firewall Connection Tracking
+      - 1.3.6.1.4.1.14988.1.1.8.1     # mtxrConnectionTrackingCount
+      
+      # Queue Statistics
+      - 1.3.6.1.4.1.14988.1.1.9.1.1   # mtxrQueueName
+      - 1.3.6.1.4.1.14988.1.1.9.1.2   # mtxrQueueBytes
+      - 1.3.6.1.4.1.14988.1.1.9.1.3   # mtxrQueuePackets
+      - 1.3.6.1.4.1.14988.1.1.9.1.4   # mtxrQueueDropped
+      
+      # Routing Table
+      - 1.3.6.1.4.1.14988.1.1.10.1.1  # mtxrRouteDstAddress
+      - 1.3.6.1.4.1.14988.1.1.10.1.2  # mtxrRouteGateway
+      - 1.3.6.1.4.1.14988.1.1.10.1.3  # mtxrRouteDistance
+      - 1.3.6.1.4.1.14988.1.1.10.1.4  # mtxrRouteActive
+      
+      # UPS Status (if connected)
+      - 1.3.6.1.4.1.14988.1.1.11.1    # mtxrUpsStatus
+      - 1.3.6.1.4.1.14988.1.1.11.2    # mtxrUpsRuntimeLeft
+      - 1.3.6.1.4.1.14988.1.1.11.3    # mtxrUpsBatteryCharge
+      - 1.3.6.1.4.1.14988.1.1.11.4    # mtxrUpsLineVoltage
+      - 1.3.6.1.4.1.14988.1.1.11.5    # mtxrUpsLoad
+      
+    get:
+      - 1.3.6.1.2.1.1.1.0    # sysDescr
+      - 1.3.6.1.2.1.1.3.0    # sysUpTime
+      - 1.3.6.1.2.1.1.4.0    # sysContact
+      - 1.3.6.1.2.1.1.5.0    # sysName
+      - 1.3.6.1.2.1.1.6.0    # sysLocation
+      
+    metrics:
+      # System metrics
+      - name: sysDescr
+        oid: 1.3.6.1.2.1.1.1
+        type: DisplayString
+        help: System description
+      - name: sysUpTime
+        oid: 1.3.6.1.2.1.1.3
+        type: gauge
+        help: System uptime in hundredths of seconds
+      - name: sysContact
+        oid: 1.3.6.1.2.1.1.4
+        type: DisplayString
+        help: System contact
+      - name: sysName
+        oid: 1.3.6.1.2.1.1.5
+        type: DisplayString
+        help: System name
+      - name: sysLocation
+        oid: 1.3.6.1.2.1.1.6
+        type: DisplayString
+        help: System location
+      
+      # Interface metrics
+      - name: ifDescr
+        oid: 1.3.6.1.2.1.2.2.1.2
+        type: DisplayString
+        help: Interface description
+        indexes:
+          - labelname: ifIndex
+            type: gauge
+      - name: ifType
+        oid: 1.3.6.1.2.1.2.2.1.3
+        type: gauge
+        help: Interface type
+        indexes:
+          - labelname: ifIndex
+            type: gauge
+      - name: ifMtu
+        oid: 1.3.6.1.2.1.2.2.1.4
+        type: gauge
+        help: Interface MTU
+        indexes:
+          - labelname: ifIndex
+            type: gauge
+      - name: ifSpeed
+        oid: 1.3.6.1.2.1.2.2.1.5
+        type: gauge
+        help: Interface speed in bits per second
+        indexes:
+          - labelname: ifIndex
+            type: gauge
+      - name: ifPhysAddress
+        oid: 1.3.6.1.2.1.2.2.1.6
+        type: PhysAddress48
+        help: Interface physical address
+        indexes:
+          - labelname: ifIndex
+            type: gauge
+      - name: ifAdminStatus
+        oid: 1.3.6.1.2.1.2.2.1.7
+        type: gauge
+        help: Interface admin status (1=up, 2=down, 3=testing)
+        indexes:
+          - labelname: ifIndex
+            type: gauge
+      - name: ifOperStatus
+        oid: 1.3.6.1.2.1.2.2.1.8
+        type: gauge
+        help: Interface operational status (1=up, 2=down)
+        indexes:
+          - labelname: ifIndex
+            type: gauge
+      - name: ifInOctets
+        oid: 1.3.6.1.2.1.2.2.1.10
+        type: counter
+        help: Total octets received on interface
+        indexes:
+          - labelname: ifIndex
+            type: gauge
+      - name: ifInUcastPkts
+        oid: 1.3.6.1.2.1.2.2.1.11
+        type: counter
+        help: Unicast packets received
+        indexes:
+          - labelname: ifIndex
+            type: gauge
+      - name: ifInDiscards
+        oid: 1.3.6.1.2.1.2.2.1.13
+        type: counter
+        help: Inbound packets discarded
+        indexes:
+          - labelname: ifIndex
+            type: gauge
+      - name: ifInErrors
+        oid: 1.3.6.1.2.1.2.2.1.14
+        type: counter
+        help: Inbound packets with errors
+        indexes:
+          - labelname: ifIndex
+            type: gauge
+      - name: ifOutOctets
+        oid: 1.3.6.1.2.1.2.2.1.16
+        type: counter
+        help: Total octets transmitted
+        indexes:
+          - labelname: ifIndex
+            type: gauge
+      - name: ifOutUcastPkts
+        oid: 1.3.6.1.2.1.2.2.1.17
+        type: counter
+        help: Unicast packets transmitted
+        indexes:
+          - labelname: ifIndex
+            type: gauge
+      - name: ifOutDiscards
+        oid: 1.3.6.1.2.1.2.2.1.19
+        type: counter
+        help: Outbound packets discarded
+        indexes:
+          - labelname: ifIndex
+            type: gauge
+      - name: ifOutErrors
+        oid: 1.3.6.1.2.1.2.2.1.20
+        type: counter
+        help: Outbound packets with errors
+        indexes:
+          - labelname: ifIndex
+            type: gauge
+      
+      # TCP metrics
+      - name: tcpActiveOpens
+        oid: 1.3.6.1.2.1.6.5
+        type: counter
+        help: TCP connections initiated in active state
+      - name: tcpPassiveOpens
+        oid: 1.3.6.1.2.1.6.6
+        type: counter
+        help: TCP connections initiated in passive state
+      - name: tcpAttemptFails
+        oid: 1.3.6.1.2.1.6.7
+        type: counter
+        help: Failed TCP connection attempts
+      - name: tcpEstabResets
+        oid: 1.3.6.1.2.1.6.8
+        type: counter
+        help: TCP resets for established connections
+      - name: tcpCurrEstab
+        oid: 1.3.6.1.2.1.6.9
+        type: gauge
+        help: Current established TCP connections
+      - name: tcpInSegs
+        oid: 1.3.6.1.2.1.6.10
+        type: counter
+        help: TCP segments received
+      - name: tcpOutSegs
+        oid: 1.3.6.1.2.1.6.11
+        type: counter
+        help: TCP segments transmitted
+      - name: tcpRetransSegs
+        oid: 1.3.6.1.2.1.6.12
+        type: counter
+        help: TCP segments retransmitted
+      
+      # UDP metrics
+      - name: udpInDatagrams
+        oid: 1.3.6.1.2.1.7.1
+        type: counter
+        help: UDP datagrams received
+      - name: udpNoPorts
+        oid: 1.3.6.1.2.1.7.2
+        type: counter
+        help: UDP datagrams received on unavailable ports
+      - name: udpInErrors
+        oid: 1.3.6.1.2.1.7.3
+        type: counter
+        help: UDP datagrams with errors
+      - name: udpOutDatagrams
+        oid: 1.3.6.1.2.1.7.4
+        type: counter
+        help: UDP datagrams transmitted
+      
+      # ICMP metrics
+      - name: icmpInMsgs
+        oid: 1.3.6.1.2.1.5.1
+        type: counter
+        help: ICMP messages received
+      - name: icmpInErrors
+        oid: 1.3.6.1.2.1.5.2
+        type: counter
+        help: ICMP messages received with errors
+      - name: icmpOutMsgs
+        oid: 1.3.6.1.2.1.5.14
+        type: counter
+        help: ICMP messages transmitted
+      - name: icmpOutErrors
+        oid: 1.3.6.1.2.1.5.15
+        type: counter
+        help: ICMP messages transmission errors
+      
+      # Host Resources - Memory
+      - name: hrMemorySize
+        oid: 1.3.6.1.2.1.25.2.2
+        type: gauge
+        help: Total physical memory in KB
+      
+      # Host Resources - Storage
+      - name: hrStorageAllocationUnits
+        oid: 1.3.6.1.2.1.25.2.3.1.4
+        type: gauge
+        help: Storage allocation unit size in bytes
+        indexes:
+          - labelname: hrStorageIndex
+            type: gauge
+      - name: hrStorageSize
+        oid: 1.3.6.1.2.1.25.2.3.1.5
+        type: gauge
+        help: Storage size in allocation units
+        indexes:
+          - labelname: hrStorageIndex
+            type: gauge
+      - name: hrStorageUsed
+        oid: 1.3.6.1.2.1.25.2.3.1.6
+        type: gauge
+        help: Storage used in allocation units
+        indexes:
+          - labelname: hrStorageIndex
+            type: gauge
+      - name: hrStorageDescr
+        oid: 1.3.6.1.2.1.25.2.3.1.3
+        type: DisplayString
+        help: Storage description
+        indexes:
+          - labelname: hrStorageIndex
+            type: gauge
+      
+      # MikroTik Interface Stats
+      - name: mtxrInterfaceStatsName
+        oid: 1.3.6.1.4.1.14988.1.1.1.1.1
+        type: DisplayString
+        help: MikroTik interface name
+        indexes:
+          - labelname: mtxrInterfaceIndex
+            type: gauge
+      - name: mtxrInterfaceStatsRxByte
+        oid: 1.3.6.1.4.1.14988.1.1.1.1.2
+        type: counter
+        help: Bytes received on interface
+        indexes:
+          - labelname: mtxrInterfaceIndex
+            type: gauge
+      - name: mtxrInterfaceStatsTxByte
+        oid: 1.3.6.1.4.1.14988.1.1.1.1.3
+        type: counter
+        help: Bytes transmitted on interface
+        indexes:
+          - labelname: mtxrInterfaceIndex
+            type: gauge
+      - name: mtxrInterfaceStatsRxPacket
+        oid: 1.3.6.1.4.1.14988.1.1.1.1.4
+        type: counter
+        help: Packets received on interface
+        indexes:
+          - labelname: mtxrInterfaceIndex
+            type: gauge
+      - name: mtxrInterfaceStatsTxPacket
+        oid: 1.3.6.1.4.1.14988.1.1.1.1.5
+        type: counter
+        help: Packets transmitted on interface
+        indexes:
+          - labelname: mtxrInterfaceIndex
+            type: gauge
+      - name: mtxrInterfaceStatsRxError
+        oid: 1.3.6.1.4.1.14988.1.1.1.1.6
+        type: counter
+        help: Receive errors on interface
+        indexes:
+          - labelname: mtxrInterfaceIndex
+            type: gauge
+      - name: mtxrInterfaceStatsTxError
+        oid: 1.3.6.1.4.1.14988.1.1.1.1.7
+        type: counter
+        help: Transmit errors on interface
+        indexes:
+          - labelname: mtxrInterfaceIndex
+            type: gauge
+      - name: mtxrInterfaceStatsRxDrop
+        oid: 1.3.6.1.4.1.14988.1.1.1.1.8
+        type: counter
+        help: Received packets dropped
+        indexes:
+          - labelname: mtxrInterfaceIndex
+            type: gauge
+      - name: mtxrInterfaceStatsTxDrop
+        oid: 1.3.6.1.4.1.14988.1.1.1.1.9
+        type: counter
+        help: Transmitted packets dropped
+        indexes:
+          - labelname: mtxrInterfaceIndex
+            type: gauge
+      
+      # MikroTik CPU
+      - name: mtxrCpuLoad
+        oid: 1.3.6.1.4.1.14988.1.1.3.1
+        type: gauge
+        help: CPU load percentage
+      - name: mtxrCpuFrequency
+        oid: 1.3.6.1.4.1.14988.1.1.3.2
+        type: gauge
+        help: CPU frequency in MHz
+      - name: mtxrCpuCount
+        oid: 1.3.6.1.4.1.14988.1.1.3.3
+        type: gauge
+        help: Number of CPUs
+      
+      # MikroTik Memory
+      - name: mtxrMemoryTotal
+        oid: 1.3.6.1.4.1.14988.1.1.3.4
+        type: gauge
+        help: Total memory in bytes
+      - name: mtxrMemoryUsed
+        oid: 1.3.6.1.4.1.14988.1.1.3.5
+        type: gauge
+        help: Used memory in bytes
+      - name: mtxrMemoryFree
+        oid: 1.3.6.1.4.1.14988.1.1.3.6
+        type: gauge
+        help: Free memory in bytes
+      
+      # MikroTik Disk
+      - name: mtxrDiskSize
+        oid: 1.3.6.1.4.1.14988.1.1.3.7
+        type: gauge
+        help: Total disk size in bytes
+      - name: mtxrDiskUsed
+        oid: 1.3.6.1.4.1.14988.1.1.3.8
+        type: gauge
+        help: Used disk space in bytes
+      - name: mtxrDiskFree
+        oid: 1.3.6.1.4.1.14988.1.1.3.9
+        type: gauge
+        help: Free disk space in bytes
+      
+      # MikroTik Health
+      - name: mtxrHealthTemperature
+        oid: 1.3.6.1.4.1.14988.1.1.3.10
+        type: gauge
+        help: Device temperature in Celsius
+      - name: mtxrHealthVoltage
+        oid: 1.3.6.1.4.1.14988.1.1.3.11
+        type: gauge
+        help: Voltage in volts
+      - name: mtxrHealthCurrent
+        oid: 1.3.6.1.4.1.14988.1.1.3.12
+        type: gauge
+        help: Current in amperes
+      - name: mtxrHealthPowerConsumption
+        oid: 1.3.6.1.4.1.14988.1.1.3.13
+        type: gauge
+        help: Power consumption in watts
+      
+      # MikroTik DHCP Server Leases
+      - name: mtxrDhcpServerLeasIpAddress
+        oid: 1.3.6.1.4.1.14988.1.1.4.1.1
+        type: IpAddress
+        help: DHCP lease IP address
+        indexes:
+          - labelname: mtxrDhcpLeaseIndex
+            type: gauge
+      - name: mtxrDhcpServerLeasMacAddress
+        oid: 1.3.6.1.4.1.14988.1.1.4.1.2
+        type: PhysAddress48
+        help: DHCP lease MAC address
+        indexes:
+          - labelname: mtxrDhcpLeaseIndex
+            type: gauge
+      - name: mtxrDhcpServerLeasStatus
+        oid: 1.3.6.1.4.1.14988.1.1.4.1.4
+        type: gauge
+        help: DHCP lease status (1=active, 2=waiting)
+        indexes:
+          - labelname: mtxrDhcpLeaseIndex
+            type: gauge
+      
+      # MikroTik Neighbor
+      - name: mtxrNeighborMacAddress
+        oid: 1.3.6.1.4.1.14988.1.1.5.1.1
+        type: PhysAddress48
+        help: Neighbor MAC address
+        indexes:
+          - labelname: mtxrNeighborIndex
+            type: gauge
+      - name: mtxrNeighborIpAddress
+        oid: 1.3.6.1.4.1.14988.1.1.5.1.2
+        type: IpAddress
+        help: Neighbor IP address
+        indexes:
+          - labelname: mtxrNeighborIndex
+            type: gauge
+      - name: mtxrNeighborIdentity
+        oid: 1.3.6.1.4.1.14988.1.1.5.1.4
+        type: DisplayString
+        help: Neighbor identity
+        indexes:
+          - labelname: mtxrNeighborIndex
+            type: gauge
+      - name: mtxrNeighborPlatform
+        oid: 1.3.6.1.4.1.14988.1.1.5.1.5
+        type: DisplayString
+        help: Neighbor platform
+        indexes:
+          - labelname: mtxrNeighborIndex
+            type: gauge
+      
+      # MikroTik Connection Tracking
+      - name: mtxrConnectionTrackingCount
+        oid: 1.3.6.1.4.1.14988.1.1.8.1
+        type: gauge
+        help: Number of tracked connections
+      
+      # MikroTik Queue
+      - name: mtxrQueueName
+        oid: 1.3.6.1.4.1.14988.1.1.9.1.1
+        type: DisplayString
+        help: Queue name
+        indexes:
+          - labelname: mtxrQueueIndex
+            type: gauge
+      - name: mtxrQueueBytes
+        oid: 1.3.6.1.4.1.14988.1.1.9.1.2
+        type: counter
+        help: Queue bytes processed
+        indexes:
+          - labelname: mtxrQueueIndex
+            type: gauge
+      - name: mtxrQueuePackets
+        oid: 1.3.6.1.4.1.14988.1.1.9.1.3
+        type: counter
+        help: Queue packets processed
+        indexes:
+          - labelname: mtxrQueueIndex
+            type: gauge
+      - name: mtxrQueueDropped
+        oid: 1.3.6.1.4.1.14988.1.1.9.1.4
+        type: counter
+        help: Queue packets dropped
+        indexes:
+          - labelname: mtxrQueueIndex
+            type: gauge
+      
+      # MikroTik UPS
+      - name: mtxrUpsStatus
+        oid: 1.3.6.1.4.1.14988.1.1.11.1
+        type: gauge
+        help: UPS status (1=online, 2=battery, 3=offline)
+      - name: mtxrUpsRuntimeLeft
+        oid: 1.3.6.1.4.1.14988.1.1.11.2
+        type: gauge
+        help: UPS runtime left in minutes
+      - name: mtxrUpsBatteryCharge
+        oid: 1.3.6.1.4.1.14988.1.1.11.3
+        type: gauge
+        help: UPS battery charge percentage
+      - name: mtxrUpsLineVoltage
+        oid: 1.3.6.1.4.1.14988.1.1.11.4
+        type: gauge
+        help: UPS line voltage
+      - name: mtxrUpsLoad
+        oid: 1.3.6.1.4.1.14988.1.1.11.5
+        type: gauge
+        help: UPS load percentage

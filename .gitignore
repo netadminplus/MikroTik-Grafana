@@ -1,0 +1,17 @@
+# Environment files
+.env
+
+# Data directories
+grafana/data/
+prometheus/data/
+
+# Logs
+*.log
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Backup files
+*.tar.gz
+*.bak

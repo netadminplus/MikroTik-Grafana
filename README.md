@@ -81,10 +81,12 @@ GRAFANA_ADMIN_PASSWORD=your-secure-password
 
 > ⚠️ **Security Warning:** SNMP v2c sends data in plain text. Only enable it on trusted networks or restrict access to specific IPs. For production environments, consider SNMP v3 with authentication.
 
-Enable SNMP on your MikroTik router. **Official MikroTik SNMP documentation:**  
+Enable SNMP on your MikroTik router. **Official MikroTik SNMP documentation:**
 📖 https://help.mikrotik.com/docs/spaces/ROS/pages/8978519/SNMP
 
-**Quick setup (run in MikroTik terminal):**
+> ⚠️ **IMPORTANT:** You MUST add an SNMP community. Without a community, SNMP will not work!
+
+**Quick setup (run ALL commands in MikroTik terminal):**
 ```routeros
 /ip firewall filter add chain=input protocol=udp dst-port=161 action=accept comment="Allow SNMP" place-before=0
 /snmp set enabled=yes
@@ -156,13 +158,16 @@ auths:
     community: your-community-string  # <-- Change this
 ```
 
-### 6. Fix Directory Permissions
+### 6. Create and Fix Directory Permissions
 
-Before starting the stack, fix permissions on the data directories:
+Before starting the stack, create and fix permissions on the data directories:
 
 ```bash
 # Stop any running containers
 docker compose down
+
+# Create data directories (if they don't exist)
+mkdir -p prometheus/data grafana/data
 
 # Fix permissions for Prometheus and Grafana data directories
 sudo chown -R 65534:65534 prometheus/data grafana/data
@@ -213,12 +218,29 @@ After logging in:
 3. Use the "Router" dropdown at the top to select your device
 
 > **Note:** If you see "Failed to upgrade legacy queries" error:
-> 1. Press `Ctrl+Shift+R` (or `Cmd+Shift+R` on Mac) to hard refresh your browser
-> 2. If still showing error, go to **Dashboards**, delete the dashboard, then restart Grafana:
->    ```bash
->    docker compose restart grafana
->    ```
-> 3. Refresh browser - dashboard will be re-provisioned automatically
+> 
+> **Option A - Via Browser:**
+> 1. Press `Ctrl+Shift+R` (or `Cmd+Shift+R` on Mac) to hard refresh
+> 2. If still showing error, close browser completely and reopen
+> 
+> **Option B - Delete and Re-provision:**
+> ```bash
+> # Delete dashboard via API (provisioned dashboards cannot be deleted via UI)
+> curl -X DELETE "http://admin:YOUR_PASSWORD@localhost:3000/api/dashboards/uid/mikrotik-router" 2>/dev/null || true
+> 
+> # Restart Grafana to re-provision
+> docker compose restart grafana
+> 
+> # Wait 10 seconds, then refresh browser
+> sleep 10
+> ```
+> 
+> **Option C - Clean Start:**
+> ```bash
+> docker compose down
+> rm -rf grafana/data/*
+> docker compose up -d
+> ```
 
 ## Dashboard Panels
 

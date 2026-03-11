@@ -513,4 +513,4 @@ If you find this project useful, consider supporting to keep the content free an
 
 ## License
 
-This configuration is provided as-is for monitoring MikroTik devices.
+This configuration is provided as-is for monitoring MikroTik devices..

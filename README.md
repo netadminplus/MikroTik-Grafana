@@ -217,30 +217,31 @@ After logging in:
 2. Select **MikroTik Router Dashboard**
 3. Use the "Router" dropdown at the top to select your device
 
-> **Note:** If you see "Failed to upgrade legacy queries" error:
+> **Note:** If you see "Failed to upgrade legacy queries" or "Datasource not found" error:
 > 
-> **Option A - Via Browser:**
-> 1. Press `Ctrl+Shift+R` (or `Cmd+Shift+R` on Mac) to hard refresh
-> 2. If still showing error, close browser completely and reopen
+> **This is caused by browser cache + Grafana dashboard provisioning.**
 > 
-> **Option B - Delete and Re-provision:**
+> **Fix:**
 > ```bash
-> # Delete dashboard via API (provisioned dashboards cannot be deleted via UI)
-> curl -X DELETE "http://admin:YOUR_PASSWORD@localhost:3000/api/dashboards/uid/mikrotik-router" 2>/dev/null || true
+> # 1. Stop Grafana
+> docker compose stop grafana
 > 
-> # Restart Grafana to re-provision
-> docker compose restart grafana
-> 
-> # Wait 10 seconds, then refresh browser
-> sleep 10
-> ```
-> 
-> **Option C - Clean Start:**
-> ```bash
-> docker compose down
+> # 2. Clear Grafana database (this resets everything)
 > rm -rf grafana/data/*
+> 
+> # 3. Restart
 > docker compose up -d
+> 
+> # 4. Wait 30 seconds for provisioning
+> sleep 30
 > ```
+> 
+> **Then in browser:**
+> 1. Clear browser cache completely (Ctrl+Shift+Delete)
+> 2. Close ALL browser tabs
+> 3. Open new incognito/private window
+> 4. Go to `http://your-server-ip:3000`
+> 5. Login and check dashboard
 
 ## Dashboard Panels
 

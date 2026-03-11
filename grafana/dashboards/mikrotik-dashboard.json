@@ -1,7 +1,5 @@
 {
-  "annotations": {
-    "list": []
-  },
+  "annotations": {"list": []},
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 1,
@@ -302,28 +300,8 @@
       "type": "timeseries"
     },
     {
-      "datasource": {"type": "prometheus", "uid": "PBFA97CFB590B2093"},
-      "fieldConfig": {
-        "defaults": {
-          "color": {"mode": "thresholds"},
-          "custom": {"align": "auto", "cellOptions": {"type": "auto"}, "inspect": false},
-          "mappings": [{"options": {"1": {"color": "green", "index": 0, "text": "UP"}, "2": {"color": "red", "index": 1, "text": "DOWN"}}, "type": "value"}],
-          "thresholds": {"mode": "absolute", "steps": [{"color": "green", "value": null}]}
-        },
-        "overrides": []
-      },
-      "gridPos": {"h": 8, "w": 24, "x": 0, "y": 25},
-      "id": 11,
-      "options": {"cellHeight": "sm", "footer": {"countRows": false, "fields": "", "reducer": ["sum"], "show": false}, "showHeader": true},
-      "pluginVersion": "11.0.0",
-      "targets": [{"datasource": {"type": "prometheus", "uid": "PBFA97CFB590B2093"}, "expr": "ifOperStatus{instance=\"$router\"}", "format": "table", "instant": true, "legendFormat": "", "refId": "A"}],
-      "title": "Interface Status",
-      "transformations": [{"id": "organize", "options": {"excludeByName": {"Time": true, "__name__": true, "instance": true, "job": true}, "renameByName": {"Value": "Status", "ifDescr": "Interface"}}}],
-      "type": "table"
-    },
-    {
       "collapsed": false,
-      "gridPos": {"h": 1, "w": 24, "x": 0, "y": 33},
+      "gridPos": {"h": 1, "w": 24, "x": 0, "y": 25},
       "id": 14,
       "panels": [],
       "title": "System Info",
@@ -339,7 +317,7 @@
         },
         "overrides": []
       },
-      "gridPos": {"h": 4, "w": 6, "x": 0, "y": 34},
+      "gridPos": {"h": 4, "w": 6, "x": 0, "y": 26},
       "id": 22,
       "options": {"colorMode": "background", "graphMode": "none", "justifyMode": "auto", "orientation": "horizontal", "reduceOptions": {"calcs": ["lastNotNull"], "fields": "", "values": false}, "textMode": "value"},
       "pluginVersion": "11.0.0",
@@ -358,7 +336,7 @@
         },
         "overrides": []
       },
-      "gridPos": {"h": 4, "w": 6, "x": 6, "y": 34},
+      "gridPos": {"h": 4, "w": 6, "x": 6, "y": 26},
       "id": 24,
       "options": {"colorMode": "background", "graphMode": "none", "justifyMode": "auto", "orientation": "horizontal", "reduceOptions": {"calcs": ["lastNotNull"], "fields": "", "values": false}, "textMode": "value"},
       "pluginVersion": "11.0.0",

@@ -373,7 +373,7 @@
   "timepicker": {},
   "timezone": "browser",
   "title": "MikroTik Router Dashboard",
-  "uid": "mikrotik-router",
+  "uid": "mikrotik-v2",
   "version": 1,
   "weekStart": ""
 }

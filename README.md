@@ -212,6 +212,14 @@ After logging in:
 2. Select **MikroTik Router Dashboard**
 3. Use the "Router" dropdown at the top to select your device
 
+> **Note:** If you see "Failed to upgrade legacy queries" error:
+> 1. Press `Ctrl+Shift+R` (or `Cmd+Shift+R` on Mac) to hard refresh your browser
+> 2. If still showing error, go to **Dashboards**, delete the dashboard, then restart Grafana:
+>    ```bash
+>    docker compose restart grafana
+>    ```
+> 3. Refresh browser - dashboard will be re-provisioned automatically
+
 ## Dashboard Panels
 
 The dashboard includes:

@@ -1,6 +1,6 @@
 global:
-  scrape_interval: 30s
-  evaluation_interval: 30s
+  scrape_interval: 60s
+  evaluation_interval: 60s
   external_labels:
     monitor: 'mikrotik-monitor'
 
@@ -17,6 +17,7 @@ scrape_configs:
 
   # MikroTik Router monitoring via SNMP Exporter
   - job_name: 'mikrotik'
+    scrape_timeout: 30s
     static_configs:
       # Replace with your MikroTik router IP address
       - targets:
